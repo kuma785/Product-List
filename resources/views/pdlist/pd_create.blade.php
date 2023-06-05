@@ -2,7 +2,7 @@
 
 @section('content')
     <main class="mx-auto w-75 text-center">
-        <h2 class="m-2">新規商品登録</h2>
+        <h2 class="m-2">新規登録</h2>
         @if (session('flash_massage'))
             <p>{{session('flash_massage')}}</p>
         @endif
