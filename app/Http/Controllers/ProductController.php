@@ -35,6 +35,14 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+        $request->validate([
+            'company_id' => 'required',
+            'product_name' => 'required',
+            'price' => 'required|numeric',
+            'stock' => 'required|numeric',
+            'comment' => 'required',
+        ]);
+
         $product = new Product();
         $product->company_id = $request->input('company_id');
         $product->product_name = $request->input('product_name');       
