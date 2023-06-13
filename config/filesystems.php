@@ -55,6 +55,14 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        
+        'admin' => [
+            'driver' =>'local',
+            'root' => public_path(''),
+            'visibility' =>'public',
+            'url' => env('APP_URL'),
+        ],
+
 
     ],
 

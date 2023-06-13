@@ -6,17 +6,28 @@
             @if (session('flash_massage'))
                 <p>{{session('flash_massage')}}</p>
             @endif
-            <div class="d-flex justify-content-between w- py-4">
-                <input type="text" placeholder="商品名で検索">
+            <div class="d-flex justify-content-between py-4">
+                <form method="GET" action="{{ route('pdlist.index')}}">
+                    <div class="d-flex justify-content-center">
+                        <input type="text" placeholder="商品名で検索" name="product_name"  value="{{ old('product_name')}}">
+                        <select name="company_id" value="{{ old('company_id')}}" class="ms-3 fs-7 pe-5 p-2">
+                        <option disabled selected value>メーカーで検索</option>
+                            @foreach ($companys as $company) 
+                                <option>{{$company->company_name}}</option>
+                            @endforeach
+                        </select>
+                        <input type="submit" value="検索" class="ms-3 btn btn-light btn-sm btn-outline-secondary">
+                    </div>
+                </form>
                 <div>
                     <a href="{{ route('pdlist.pd_create')}}" class="btn btn-outline-primary ">新規登録</a>
                 </div>
             </div>
             
-                <table class="table table-striped">
+                <table class="table table-striped align-middle">
                     <tr>
                         <th>ID</th>
-                        <th>商品画像</th>
+                        <th scope="col" style="width:10%">商品画像</th>
                         <th>商品名</th>
                         <th>価格</th>
                         <th>在庫数</th>
@@ -28,7 +39,13 @@
                     @foreach($products as $product)
                     <tr>
                         <td>{{$product->id}}</td>
-                        <td>画像</td>
+                        <td>
+                            @if ($product->image)
+                            <img src="{{ asset('storage/'.$product->image)}}" class="img-fluid w-75"> 
+                             @else
+                            <img src="{{ asset('img/none.png')}}" class="img-fluid w-75">
+                            @endif
+                        </td>
                         <td>{{$product->product_name}}</td>
                         <td>{{$product->price}}</td>
                         <td>{{$product->stock}}</td>

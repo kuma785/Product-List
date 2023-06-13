@@ -21,7 +21,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/pdlist', [ProductController::class, 'index'])->name('pdlist.pd_read');
+Route::get('/pdlist', [ProductController::class, 'index'])->name('pdlist.index');
 Route::get('/pdlist/create', [ProductController::class, 'create'])->name('pdlist.pd_create');
 Route::post('/pdlist', [ProductController::class, 'store'])->name('pdlist.store');
 Route::get('/pdlist/{product}', [ProductController::class, 'show'])->name('pdlist.pd_detail');

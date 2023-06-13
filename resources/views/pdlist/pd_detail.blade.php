@@ -8,7 +8,11 @@
         @endif
         <div  class="d-flex justify-content-center ">
             <div class="w-25 my-5 me-5">
-                <img src="{{asset('img/product.png')}}" class="img-fluid"> 
+                @if ($product->image)
+                <img src="{{ asset('storage/'.$product->image)}}" class="img-fluid"> 
+                @else
+                <img src="{{ asset('img/none.png')}}" class="img-fluid">
+                @endif
             </div>
             <div class="w-25">
                 @csrf

@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar navbar-expand-md navbar-light bg-info-subtle fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('pdlist.pd_read') }}">
+                <a class="navbar-brand" href="{{ route('pdlist.index') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

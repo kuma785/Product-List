@@ -22,7 +22,22 @@ class ProductController extends Controller
         $products = Product::all();
         $companys = Company::all();
 
-        return view('pdlist.index',compact('products'));
+        $search_name = $request->input('product_name');
+        $search_id = $request->input('company_id');
+
+        $query = Product::query();
+
+        if($search_id == NULL){
+            $query->where('product_name','LiKE',"%$search_name%");
+        }else{
+            $query->where('product_name','LiKE',"%$search_name%")
+            ->where('company_id','=',$search_id);
+        };
+        
+
+        $products = $query->get();
+
+        return view('pdlist.index',compact('products','companys'));
     }
 
     /**
@@ -57,6 +72,8 @@ class ProductController extends Controller
         $product->price = $request->input('price');
         $product->stock = $request->input('stock');
         $product->comment = $request->input('comment');
+        $product->image = $request->file('image')->store('images','public');
+
         $product->save();
 
         return redirect()->route('pdlist.pd_create')->with('flash_massage','登録が完了しました。');
@@ -91,6 +108,14 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product){
+        $request->validate([
+            'company_id' => 'required',
+            'product_name' => 'required',
+            'price' => 'required|numeric',
+            'stock' => 'required|numeric',
+            'comment' => 'required',
+        ]);
+        
         $product->company_id = $request->input('company_id');
         $product->product_name = $request->input('product_name');       
         $product->price = $request->input('price');

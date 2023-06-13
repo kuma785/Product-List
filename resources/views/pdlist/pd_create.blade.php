@@ -15,7 +15,7 @@
         @if (session('flash_massage'))
             <p>{{session('flash_massage')}}</p>
         @endif
-        <form action="{{route('pdlist.store')}}" method="post">
+        <form action="{{route('pdlist.store')}}" method="post" action="/upload" enctype="multipart/form-data">
             @csrf
             <div>
                 <label for="product_name" class="mt-2 fs-5">-商品名-</label><br>
@@ -41,6 +41,10 @@
             <div>
                 <label for="comment" class="mt-2 fs-5">-コメント-</label><br>
                 <input type="text" name="comment"><br>
+            </div>
+            <div>
+                <label for="image" class="mt-2 fs-5">-画像-</label><br>
+                <input type="file" name="image"><br>
             </div>
             <div class="d-flex justify-content-center">
                 <a href="{{route('pdlist.store')}}" class="btn btn-outline-primary mt-3 mx-4">戻る</a>
