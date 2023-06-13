@@ -3,18 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Company;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth');
+     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
+    public function index(Request $request){
         $products = Product::all();
+        $companys = Company::all();
 
         return view('pdlist.pd_read',compact('products'));
     }
@@ -24,8 +30,10 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(){
-        return view('pdlist.pd_create');
+    public function create(Request $reques){
+        $companys = Company::all();
+
+        return view('pdlist.pd_create',compact('companys'));
     }
 
     /**
@@ -71,7 +79,8 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Product $product){
-        return view('pdlist.pd_edit',compact('product'));
+        $companys = Company::all();
+        return view('pdlist.pd_edit',compact('product','companys'));
     }
 
     /**

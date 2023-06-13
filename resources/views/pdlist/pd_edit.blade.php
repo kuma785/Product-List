@@ -21,7 +21,12 @@
             </div>
             <div>
                 <label for="company_id" class="mt-2 fs-5">-メーカーID-</label><br>
-                <input type="text" name="company_id" value="{{ old('company_id',$product->company_id)}}"><br>
+                <select name="company_id" class="mt-2 fs-7 pe-5 pt-1">
+                    <option disabled selected value>{{ old('company_id',$product->company_id)}}</option>
+                        @foreach ($companys as $company) 
+                            <option>{{$company->company_name}}</option>
+                        @endforeach
+                </select>
             </div>
             <div>
                 <label for="price" class="mt-2 fs-5">-価格-</label><br>
