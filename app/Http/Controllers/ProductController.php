@@ -64,6 +64,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
             'comment' => 'required',
+            'image' => 'required',
         ]);
 
         $product = new Product();
