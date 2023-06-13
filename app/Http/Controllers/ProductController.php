@@ -22,7 +22,7 @@ class ProductController extends Controller
         $products = Product::all();
         $companys = Company::all();
 
-        return view('pdlist.pd_read',compact('products'));
+        return view('pdlist.index',compact('products'));
     }
 
     /**
@@ -110,6 +110,6 @@ class ProductController extends Controller
     public function destroy(Product $product){
         $product->delete();
 
-        return redirect()->route('pdlist.pd_read')->with('flash_massage','商品を削除しました。');
+        return redirect()->route('pdlist.index')->with('flash_massage','商品を削除しました。');
     }
 }
