@@ -12,7 +12,7 @@
                 </ul>
             </div>
         @endif
-        <form action="{{route('pdlist.update',$product)}}" method="post">
+        <form action="{{route('pdlist.update',$product)}}" method="post" action="/upload" enctype="multipart/form-data">
             @csrf
             @method('patch')
             <div  class="d-flex justify-content-center ">
@@ -22,10 +22,7 @@
                     @else
                     <img src="{{ asset('img/none.png')}}" class="img-fluid">
                     @endif
-                    <div>
-                        <label for="image" class="mt-2 fs-5">-画像のファイル-</label><br>
-                        <input type="file" name="image"><br>
-                    </div>
+                    
                 </div>
 
                 <div>
@@ -35,11 +32,11 @@
                     </div>
                     <div>
                         <label for="company_id" class="mt-2 fs-5">-メーカーID-</label><br>
-                        <select name="company_id" class="mt-2 fs-7 pe-5 pt-1">
-                            <option disabled selected value >{{ old('company_id',$product->company_id)}}</option>
-                                @foreach ($companys as $company) 
-                                    <option>{{$company->company_name}}</option>
-                                @endforeach
+                        <select id="company_id" name="company_id" class="mt-2 fs-7 pe-5 pt-1">
+                        <option value="">選択してください</option>
+                            @foreach ($companys as $company) 
+                                <option value="{{$company->company_name}}" @if(old('company_id',$product->company_id) == $company->company_name) selected @endif>{{$company->company_name}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div>
@@ -54,7 +51,10 @@
                         <label for="comment" class="mt-2 fs-5">-コメント-</label><br>
                         <input type="text" name="comment" value="{{ old('comment',$product->comment)}}"><br>
                     </div>
-
+                    <div>
+                        <label for="image" class="mt-2 fs-5">-画像のファイル-</label><br>
+                        <input type="file" name="image"><br>
+                    </div>
                 </div>
             </div>
             <div class="d-flex justify-content-center">

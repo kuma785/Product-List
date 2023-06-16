@@ -23,10 +23,10 @@
             </div>
             <div>
                 <label for="company_id" class="mt-2 fs-5">-メーカー名-</label><br>
-                <select name="company_id" value="{{ old('company_id')}}" class="mt-2 fs-7 pe-5 pt-1">
-                    <option disabled selected value>選択してください</option>
+                <select id="company_id" name="company_id" class="mt-2 fs-7 pe-5 pt-1">
+                    <option value="">選択してください</option>
                         @foreach ($companys as $company) 
-                            <option>{{$company->company_name}}</option>
+                            <option value="{{$company->company_name}}" @if(old('company_id') == $company->company_name) selected @endif>{{$company->company_name}}</option>
                         @endforeach
                 </select>
             </div>
@@ -40,7 +40,7 @@
             </div>
             <div>
                 <label for="comment" class="mt-2 fs-5">-コメント-</label><br>
-                <input type="text" name="comment"><br>
+                <input type="text" name="comment" value="{{ old('comment')}}"><br>
             </div>
             <div>
                 <label for="image" class="mt-2 fs-5">-画像-</label><br>

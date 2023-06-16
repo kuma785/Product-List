@@ -64,7 +64,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
             'comment' => 'required',
-            'image' => 'required',
+            'image' => 'required|image',
         ]);
 
         $product = new Product();
@@ -74,7 +74,7 @@ class ProductController extends Controller
         $product->stock = $request->input('stock');
         $product->comment = $request->input('comment');
         $product->image = $request->file('image')->store('images','public');
-
+        
         $product->save();
 
         return redirect()->route('pdlist.pd_create')->with('flash_massage','登録が完了しました。');
@@ -115,6 +115,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
             'comment' => 'required',
+            'image' => 'image',
         ]);
         
         $product->company_id = $request->input('company_id');
@@ -122,6 +123,18 @@ class ProductController extends Controller
         $product->price = $request->input('price');
         $product->stock = $request->input('stock');
         $product->comment = $request->input('comment');
+        
+        
+        $image = $request->file('image');
+        if(isset($image)){
+            
+            \Storage::disk('public')->delete($product->image);
+            $product->image = $request->file('image')->store('images','public');
+           
+        }else{
+           
+        };
+        
         $product->save();
         
         return redirect()->route('pdlist.pd_detail', $product)->with('flash_massage','商品の情報を更新しました。');
@@ -135,6 +148,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product){
         $product->delete();
+        \Storage::disk('public')->delete($product->image);
 
         return redirect()->route('pdlist.index')->with('flash_massage','商品を削除しました。');
     }
