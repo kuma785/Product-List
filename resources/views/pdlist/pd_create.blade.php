@@ -44,6 +44,14 @@
             </div>
             <div>
                 <label for="image" class="mt-2 fs-5">-画像-</label><br>
+                <div class="d-none">
+                            <div>
+                                <input type="radio" value="1" name="contact" checked><label for="change">変更する</label>
+                            </div>
+                            <div>
+                                <input type="radio" value="2" name="contact"><label for="stay">変更しない</label>
+                            </div>
+                        </div>
                 <input type="file" name="image"><br>
             </div>
             <div class="d-flex justify-content-center">

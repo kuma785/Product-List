@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Models\Company;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
@@ -17,7 +19,8 @@ class ProductController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */
+     */                                                                                            
+
     public function index(Request $request){
         $products = Product::all();
         $companys = Company::all();
@@ -57,27 +60,21 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
-        $request->validate([
-            'company_id' => 'required',
-            'product_name' => 'required',
-            'price' => 'required|numeric',
-            'stock' => 'required|numeric',
-            'comment' => 'required',
-            'image' => 'required|image',
-        ]);
-
-        $product = new Product();
-        $product->company_id = $request->input('company_id');
-        $product->product_name = $request->input('product_name');       
-        $product->price = $request->input('price');
-        $product->stock = $request->input('stock');
-        $product->comment = $request->input('comment');
-        $product->image = $request->file('image')->store('images','public');
+    public function store(ProductRequest $request){
         
-        $product->save();
+        DB::beginTransaction();
+        try{
+            $product = new Product();
+            $product->productDbCreate($request);
+            DB::commit();
+            
+        }catch(ValidationException $e){
+            DB::rollback();
+            return back();
+        }
 
-        return redirect()->route('pdlist.pd_create')->with('flash_massage','登録が完了しました。');
+        return redirect()->route('pdlist.pd_create')->with('flash_massage',config('message.status.create'));
+        
     }
 
     /**
@@ -108,36 +105,22 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product){
-        $request->validate([
-            'company_id' => 'required',
-            'product_name' => 'required',
-            'price' => 'required|numeric',
-            'stock' => 'required|numeric',
-            'comment' => 'required',
-            'image' => 'image',
-        ]);
-        
-        $product->company_id = $request->input('company_id');
-        $product->product_name = $request->input('product_name');       
-        $product->price = $request->input('price');
-        $product->stock = $request->input('stock');
-        $product->comment = $request->input('comment');
-        
-        
-        $image = $request->file('image');
-        if(isset($image)){
+    public function update(ProductRequest $request, Product $product){
+        DB::beginTransaction();
+        try{
+            if($request->contact==1){
+                \Storage::disk('public')->delete($product->image); 
+                $product->imgDbUpdate($request,$product);
+            };
+            $product->productDbUpdate($request,$product);
+            DB::commit();
             
-            \Storage::disk('public')->delete($product->image);
-            $product->image = $request->file('image')->store('images','public');
-           
-        }else{
-           
-        };
+        }catch(ValidationException $e){
+            DB::rollback();
+            return back();
+        }
         
-        $product->save();
-        
-        return redirect()->route('pdlist.pd_detail', $product)->with('flash_massage','商品の情報を更新しました。');
+        return redirect()->route('pdlist.pd_detail', $product)->with('flash_massage',config('message.status.update'));
     }
 
     /**
@@ -147,9 +130,17 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Product $product){
-        $product->delete();
-        \Storage::disk('public')->delete($product->image);
+        DB::beginTransaction();
+        try{
+            $product->productDbDelete($product);
+            \Storage::disk('public')->delete($product->image); 
+            DB::commit();
+            
+        }catch(ValidationException $e){
+            DB::rollback();
+            return back();
+        }
 
-        return redirect()->route('pdlist.index')->with('flash_massage','商品を削除しました。');
+        return redirect()->route('pdlist.index')->with('flash_massage',config('message.status.delete'));
     }
 }

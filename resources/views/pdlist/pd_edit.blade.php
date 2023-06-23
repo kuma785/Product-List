@@ -22,6 +22,19 @@
                     @else
                     <img src="{{ asset('img/none.png')}}" class="img-fluid">
                     @endif
+                    <div>
+                        <label for="image" class="mt-2 fs-5">-画像のファイル-</label><br>
+                        <div class="d-flex justify-content-center p-2">
+                            <div>
+                                <input type="radio" name="contact" value="1" @if(old('contact')==1) checked @endif><label for="change">変更する</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="contact" value="2" @if(old('contact')==2) checked @endif><label for="stay">変更しない</label>
+                            </div>
+                        </div>
+                        <input type="file" name="image" class="@error('image') error @enderror"><br>
+                        
+                    </div>
                     
                 </div>
 
@@ -50,10 +63,6 @@
                     <div>
                         <label for="comment" class="mt-2 fs-5">-コメント-</label><br>
                         <input type="text" name="comment" value="{{ old('comment',$product->comment)}}"><br>
-                    </div>
-                    <div>
-                        <label for="image" class="mt-2 fs-5">-画像のファイル-</label><br>
-                        <input type="file" name="image"><br>
                     </div>
                 </div>
             </div>
