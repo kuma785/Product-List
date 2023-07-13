@@ -12,7 +12,7 @@ function search(){
             'sortkey' : $sortkey,
             'sortby' : $sortby
         };
-        console.log(data);
+        
 
         $.ajax({
             headers: {
@@ -38,7 +38,7 @@ function search(){
                 listUp(list);
                 history.pushState({ page : $('list').html() }, null, ""); 
             };
-           
+            console.log(data);
             return false;
 
         }).fail(function(jqXHR, textStatus, errorThrown){
@@ -127,6 +127,7 @@ $(document).on('click','#delbtn',function(){
 
 
 //検索アクション
+
 $(function(){
     $("#s_product_name").on("input",function(){
         search();

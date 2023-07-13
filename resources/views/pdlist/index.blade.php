@@ -49,11 +49,7 @@
                         <td><button id='delbtn' name='{{$product->id}}' class='btn btn-light btn-sm'>削除</button></td>       
                     </tr>
                     @endforeach
-                </table>
-                <a type='button' id='postman' href="{{ route('sales.index',$product_id = 60)}}">test</a>
-                <div id="search_result"></div>
-
-                
+                </table>        
         </main>
 
 @endsection
