@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center">
-                <a href="{{route('pdlist.store')}}" class="btn btn-outline-primary mt-3 mx-4">戻る</a>
+                <a href="javascript:history.back();" class="btn btn-outline-primary mt-3 mx-4">戻る</a>
                 <button type="submit" class="btn btn-outline-primary mt-3 mx-4">更新</button>
             </div>
         </form>  

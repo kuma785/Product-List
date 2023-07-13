@@ -44,7 +44,7 @@ class ProductRequest extends FormRequest
             'stock' => '在庫',
             'comment' => 'コメント',
             'image' => '画像',
-            'contact' => '変更の有無'
+            'contact' => '変更の有無',
         ];
     }
 

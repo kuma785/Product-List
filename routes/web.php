@@ -31,4 +31,5 @@ Route::post('/pdlist', [ProductController::class, 'store'])->name('pdlist.store'
 Route::get('/pdlist/{product}', [ProductController::class, 'show'])->name('pdlist.pd_detail');
 Route::get('/pdlist/{product}/edit', [ProductController::class, 'edit'])->name('pdlist.pd_edit');
 Route::patch('/pdlist/{product}', [ProductController::class, 'update'])->name('pdlist.update');
-Route::delete('/pdlist/{product}', [ProductController::class, 'destroy'])->name('pdlist.delete');
+Route::post('/pdlist/search', [ProductController::class, 'search'])->name('pdlist.search');
+Route::post('/pdlist/delete', [ProductController::class, 'delete'])->name('pdlist.delete');

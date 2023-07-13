@@ -7,41 +7,35 @@
                 <p>{{session('flash_massage')}}</p>
             @endif
             <div class="d-flex justify-content-between py-4">
-                <form method="GET" action="{{ route('pdlist.index')}}">
-                    <div class="d-flex justify-content-center">
-                        <input type="text" placeholder="商品名で検索" name="product_name"  value="{{ old('product_name')}}">
-                        <select name="company_id" value="{{ old('company_id')}}" class="ms-3 fs-7 pe-5 p-2">
-                        <option disabled selected value>メーカーで検索</option>
-                            @foreach ($companys as $company) 
-                                <option>{{$company->company_name}}</option>
-                            @endforeach
-                        </select>
-                        <input type="submit" value="検索" class="ms-3 btn btn-light btn-sm btn-outline-secondary">
-                    </div>
-                </form>
+                @include('modals.search')
+                    <a href="#" class="ms-4 link-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#searchModal">
+                        <div class="d-flex align-items-center">
+                            <span class="btn btn-outline-primary">詳細検索</span>
+                        </div>
+                    </a> 
                 <div>
                     <a href="{{ route('pdlist.pd_create')}}" class="btn btn-outline-primary ">新規登録</a>
                 </div>
             </div>
             
-                <table class="table table-striped align-middle">
+                <table id="search_table" class="table table-striped align-middle">
                     <tr>
-                        <th>ID</th>
+                        <th id='th1'>ID<img src="{{ asset('img/down.svg')}}" class="img-fluid "></th>
                         <th scope="col" style="width:10%">商品画像</th>
-                        <th>商品名</th>
-                        <th>価格</th>
-                        <th>在庫数</th>
-                        <th>メーカー</th>
+                        <th id='th2'>商品名<img src="{{ asset('img/down.svg')}}" class="img-fluid "></th>
+                        <th id='th3'>価格<img src="{{ asset('img/down.svg')}}" class="img-fluid "></th>
+                        <th id='th4'>在庫数<img src="{{ asset('img/down.svg')}}" class="img-fluid "></th>
+                        <th id='th5'>メーカー<img src="{{ asset('img/down.svg')}}" class="img-fluid "></th>
                         <th>詳細表示</th>
                         <th>編集</th>
                         <th>削除</th>
                     </tr>
                     @foreach($products as $product)
-                    <tr>
+                    <tr class="search_td">
                         <td>{{$product->id}}</td>
                         <td>
                             @if ($product->image)
-                            <img src="{{ asset('storage/'.$product->image)}}" class="img-fluid w-75"> 
+                            <img src="{{ asset('storage/'.$product->image)}}" class="img-fluid w-75 btn-outline-none"> 
                              @else
                             <img src="{{ asset('img/none.png')}}" class="img-fluid w-75">
                             @endif
@@ -49,20 +43,17 @@
                         <td>{{$product->product_name}}</td>
                         <td>{{$product->price}}</td>
                         <td>{{$product->stock}}</td>
-                        <td>{{$product->company_id}}</td> 
-                        <td><a href="{{ route('pdlist.pd_detail',$product)}}" class="btn btn-light btn-sm">詳細</a></td>
-                        <td><a href="{{ route('pdlist.pd_edit',$product)}}" class="btn btn-light btn-sm">編集</a></td>
-                        <td>
-                            <form action="{{ route('pdlist.delete', $product)}}" method="post" class=deleteAlert>
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-light btn-sm" onclick='return confirm("削除しますか？");'>削除</button> 
-                            </form>
-                        </td>       
+                        <td>{{$product->company_id}}</td>
+                        <td><button id='detailbtn' name='{{$product->id}}' class='btn btn-light btn-sm'>詳細</button></td>
+                        <td><button id='editbtn' name='{{$product->id}}' class='btn btn-light btn-sm'>編集</button></td>
+                        <td><button id='delbtn' name='{{$product->id}}' class='btn btn-light btn-sm'>削除</button></td>       
                     </tr>
                     @endforeach
                 </table>
-                <script src="{{ asset('/js/script.js') }}"></script>
+                <a type='button' id='postman' href="{{ route('sales.index',$product_id = 60)}}">test</a>
+                <div id="search_result"></div>
+
+                
         </main>
 
 @endsection

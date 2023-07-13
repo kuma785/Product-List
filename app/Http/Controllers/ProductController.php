@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProductRequest;
 
+
+
 class ProductController extends Controller
 {
 
@@ -19,26 +21,35 @@ class ProductController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */                                                                                            
+     */  
+    
+
+    public function search(Request $request){
+        $name = $_POST['name'];
+        $id = $_POST['id'];
+        $price_min = $_POST['price_min'];
+        $price_max = $_POST['price_max'];
+        $stock_min = $_POST['stock_min'];
+        $stock_max = $_POST['stock_max'];
+        $sortkey = $_POST['sortkey'];
+        $sortby = $_POST['sortby'];
+        
+        DB::beginTransaction();
+        try{
+            $products = new Product();
+            $productList = $products->productDbList($name,$id,$price_min,$price_max,$stock_min,$stock_max,$sortkey,$sortby);
+            $data = json_encode($productList);
+            echo $data;
+            
+        }catch(ValidationException $e){
+            return back();
+        }
+    }    
+    
 
     public function index(Request $request){
-        $products = Product::all();
         $companys = Company::all();
-
-        $search_name = $request->input('product_name');
-        $search_id = $request->input('company_id');
-
-        $query = Product::query();
-
-        if($search_id == NULL){
-            $query->where('product_name','LiKE',"%$search_name%");
-        }else{
-            $query->where('product_name','LiKE',"%$search_name%")
-            ->where('company_id','=',$search_id);
-        };
-        
-
-        $products = $query->get();
+        $products = Product::all();    
 
         return view('pdlist.index',compact('products','companys'));
     }
@@ -129,18 +140,26 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product){
+    
+    public function delete(Product $product){
+        $num = $_POST['delnum'];
+        $img = $_POST['imgpass'];
+
         DB::beginTransaction();
         try{
-            $product->productDbDelete($product);
-            \Storage::disk('public')->delete($product->image); 
+            $product = new Product();
+            $productLists = $product->productDbDel($num);
+            \Storage::disk('public')->delete($img); 
             DB::commit();
+
+            return;
             
         }catch(ValidationException $e){
             DB::rollback();
             return back();
         }
+        
 
-        return redirect()->route('pdlist.index')->with('flash_massage',config('message.status.delete'));
     }
+
 }

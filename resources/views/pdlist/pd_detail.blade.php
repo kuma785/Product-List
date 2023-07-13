@@ -39,14 +39,10 @@
             </div>
         </div>
         <div class="d-flex justify-content-center">
-                    <a href="{{route('pdlist.store')}}" class="btn btn-outline-primary mt-3 mx-4">戻る</a>
-                    <a href="{{route('pdlist.pd_edit',$product)}}" class="btn btn-outline-primary mt-3 mx-4">編集</a>
-                    <form action="{{ route('pdlist.delete', $product)}}" method="post" class=deleteAlert>
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn btn-outline-danger mt-3 mx-4">削除</button> 
-                    </form>  
-                </div>
+            <a href="javascript:history.back();" class="btn btn-outline-primary mt-3 mx-4">戻る</a>
+            <a href="{{route('pdlist.pd_edit',$product)}}" class="btn btn-outline-primary mt-3 mx-4">編集</a>
+            <input type ='button' id='delbtn' name='{{$product->id}}' class='btn btn-outline-danger mt-3 mx-4' value='削除'>
+        </div>
         <script src="{{ asset('/js/script.js') }}"></script>
         </main>
 

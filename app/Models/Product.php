@@ -14,6 +14,38 @@ class Product extends Model
         return $this->belongsto(Company::class);
     }
 
+    public function productDbList($name,$id,$price_min,$price_max,$stock_min,$stock_max,$sortkey,$sortby){
+    //public function productDbList($search_val){
+        
+        
+        $where = [
+            ['product_name','LiKE',"%".$name."%"]
+        ];
+
+        if($id!==''){
+            array_push($where,['company_id','LiKE',"%".$id."%"] );
+        };
+        if($price_min!==''){
+            array_push($where,['price','>=',$price_min] );
+        };
+        if($price_max!==''){
+            array_push($where,['price','<=',$price_max] );
+        };
+        if($stock_min!==''){
+            array_push($where,['stock','>=',$stock_min] );
+        };
+        if($stock_max!==''){
+            array_push($where,['stock','<=',$stock_max] );
+        };  
+
+        $productList = DB::table('products')
+            ->where($where)
+            ->orderBy($sortkey,$sortby)
+            ->get();
+        
+       return $productList;
+    }
+
     public function productDbCreate($data){
         DB::table('products')->insert([
             'company_id' => $data->company_id,
@@ -47,10 +79,10 @@ class Product extends Model
         ]); 
     }
 
-    public function productDbDelete($data){
-        $product = ['id'=> $data->id];
-        DB::delete('DELETE from products where id =:id',$product);
-           
+    public function productDbDel($data){
+        $productList = DB::table('products')
+            ->where('id',$data)->delete(); 
+        return ; 
     }
     
 }
