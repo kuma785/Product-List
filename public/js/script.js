@@ -38,7 +38,6 @@ function search(){
                 listUp(list);
                 history.pushState({ page : $('list').html() }, null, ""); 
             };
-            console.log(data);
             return false;
 
         }).fail(function(jqXHR, textStatus, errorThrown){
@@ -89,7 +88,9 @@ $(document).on('click','#delbtn',function(){
         return false;
     }else{
         let id = '#img'+delnum;
-        let imgpass = $(id).attr('src').substring(17);
+        let img = $(id).attr('src');
+        console.log(img);
+        let imgpass = img.substr(17);
         var data = {
             'delnum':delnum,
             'imgpass': imgpass,
@@ -128,9 +129,17 @@ $(document).on('click','#delbtn',function(){
 
 //検索アクション
 
+$(function(){   
+    let url = location.href;
+    if(url == 'http://localhost/laravel-product-list-app/public/pdlist'){
+        search();
+    };
+    
+});
+
 $(function(){
     $("#s_product_name").on("input",function(){
-        search();
+        
     });
 });
 

@@ -30,25 +30,7 @@
                         <th>編集</th>
                         <th>削除</th>
                     </tr>
-                    @foreach($products as $product)
-                    <tr class="search_td">
-                        <td>{{$product->id}}</td>
-                        <td>
-                            @if ($product->image)
-                            <img src="{{ asset('storage/'.$product->image)}}" class="img-fluid w-75 btn-outline-none"> 
-                             @else
-                            <img src="{{ asset('img/none.png')}}" class="img-fluid w-75">
-                            @endif
-                        </td>
-                        <td>{{$product->product_name}}</td>
-                        <td>{{$product->price}}</td>
-                        <td>{{$product->stock}}</td>
-                        <td>{{$product->company_id}}</td>
-                        <td><button id='detailbtn' name='{{$product->id}}' class='btn btn-light btn-sm'>詳細</button></td>
-                        <td><button id='editbtn' name='{{$product->id}}' class='btn btn-light btn-sm'>編集</button></td>
-                        <td><button id='delbtn' name='{{$product->id}}' class='btn btn-light btn-sm'>削除</button></td>       
-                    </tr>
-                    @endforeach
+                    
                 </table>        
         </main>
 
