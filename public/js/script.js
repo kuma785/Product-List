@@ -1,10 +1,11 @@
 $sortkey = 'id';
 $sortby = 'asc';
+
 //検索機能Ajax
 function search(){
         var data = {
-            'name' : $('#s_product_name').val(),
-            'id' : $('#s_company_id').val(),
+            'p_name' : $('#s_product_name').val(),
+            's_name' : $('#s_company_name').val(),
             'price_min' : $('#price_min').val(),
             'price_max' : $('#price_max').val(),
             'stock_min' : $('#stock_min').val(),
@@ -12,7 +13,6 @@ function search(){
             'sortkey' : $sortkey,
             'sortby' : $sortby
         };
-        
 
         $.ajax({
             headers: {
@@ -27,10 +27,11 @@ function search(){
     
         }).done(function (resp){
             var list = JSON.parse(resp);
+            
             $('.search_td').empty();
             $('#search_result').empty();
 
-            if(list.length==0){
+            if(list[0].length==0){
                 $('#search_result').html(
                     "<h3>該当のデータはありません</h3>"
                 )
@@ -53,18 +54,20 @@ function search(){
 };
 
 function listUp(list){
-    for(i=0; i<list.length;i++){
-        let image = "../public/storage/"+list[i].image
+    for(i=0; i<list[0].length;i++){
+        let num= list[0][i].company_id;
+        let c_name = $.grep(list[1],function(obj,index){return(obj.id==num)});
+        let image = "../public/storage/"+list[0][i].image
         $('#search_table').append(
-            "<tr class='search_td'><td>"+list[i].id+"</td>"+
-            "<td><img id='img"+list[i].id+"' src='"+image+"' class='img-fluid w-75'</td>"+
-            "<td>"+list[i].product_name+"</td>"+
-            "<td>"+list[i].price+"</td>"+
-            "<td>"+list[i].stock+"</td>"+
-            "<td>"+list[i].company_id+"</td>"+
-            "<td><button id='detailbtn' name='"+list[i].id+"' class='btn btn-light btn-sm'>詳細</button></td>"+
-            "<td><button id='editbtn' name='"+list[i].id+"' class='btn btn-light btn-sm'>編集</button></td>"+
-            "<td><input type='button' id='delbtn' name='"+list[i].id+"' class='btn btn-light btn-sm' value='削除'></td></tr>"
+            "<tr class='search_td'><td>"+list[0][i].id+"</td>"+
+            "<td><img id='img"+list[0][i].id+"' src='"+image+"' class='img-fluid w-75'</td>"+
+            "<td>"+list[0][i].product_name+"</td>"+
+            "<td>"+list[0][i].price+"</td>"+
+            "<td>"+list[0][i].stock+"</td>"+
+            "<td>"+c_name[0].company_name+"</td>"+
+            "<td><button id='detailbtn' name='"+list[0][i].id+"' class='btn btn-light btn-sm'>詳細</button></td>"+
+            "<td><button id='editbtn' name='"+list[0][i].id+"' class='btn btn-light btn-sm'>編集</button></td>"+
+            "<td><input type='button' id='delbtn' name='"+list[0][i].id+"' class='btn btn-light btn-sm' value='削除'></td></tr>"
         )
     };         
 };
@@ -137,14 +140,15 @@ $(function(){
     
 });
 
+
 $(function(){
     $("#s_product_name").on("input",function(){
-        
+        search();
     });
 });
 
 $(function(){
-    $("#s_company_id").on("input",function(){
+    $("#s_company_name").on("input",function(){
         search();
     });
 });

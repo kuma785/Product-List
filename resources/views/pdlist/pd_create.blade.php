@@ -22,11 +22,11 @@
                 <input type="text" name="product_name" value="{{ old('product_name')}}"><br>
             </div>
             <div>
-                <label for="company_id" class="mt-2 fs-5">-メーカー名-</label><br>
-                <select id="company_id" name="company_id" class="mt-2 fs-7 pe-5 pt-1">
+                <label for="company_name" class="mt-2 fs-5">-メーカー名-</label><br>
+                <select id="company_name" name="company_name" class="mt-2 fs-7 pe-5 pt-1">
                     <option value="">選択してください</option>
                         @foreach ($companys as $company) 
-                            <option value="{{$company->company_name}}" @if(old('company_id') == $company->company_name) selected @endif>{{$company->company_name}}</option>
+                            <option @if(old('company_name') == $company->company_name) selected @endif>{{$company->company_name}}</option>
                         @endforeach
                 </select>
             </div>

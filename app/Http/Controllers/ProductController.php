@@ -25,8 +25,8 @@ class ProductController extends Controller
     
 
     public function search(Request $request){
-        $name = $_POST['name'];
-        $id = $_POST['id'];
+        $p_name = $_POST['p_name'];
+        $s_name = $_POST['s_name'];
         $price_min = $_POST['price_min'];
         $price_max = $_POST['price_max'];
         $stock_min = $_POST['stock_min'];
@@ -36,10 +36,12 @@ class ProductController extends Controller
         
         DB::beginTransaction();
         try{
+            $companies = Company::all();
             $products = new Product();
-            $productList = $products->productDbList($name,$id,$price_min,$price_max,$stock_min,$stock_max,$sortkey,$sortby);
-            $data = json_encode($productList);
+            $productList = $products->productDbList($p_name,$s_name,$price_min,$price_max,$stock_min,$stock_max,$sortkey,$sortby);
+            $data = json_encode([$productList,$companies]);
             echo $data;
+            
             
         }catch(ValidationException $e){
             return back();
@@ -95,7 +97,18 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Product $product){
-        return view('pdlist.pd_detail',compact('product'));
+        
+        try{
+            $companies = DB::table('companies')
+            ->where('id','=',$product->company_id)
+            ->get();
+            $company = $companies[0];
+            
+        }catch(ValidationException $e){
+            DB::rollback();
+            return back();
+        }
+        return view('pdlist.pd_detail',compact('product','company'));
     }
 
     /**
@@ -105,7 +118,13 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Product $product){
-        $companys = Company::all();
+        try{
+            $companys =  DB::table('companies')->get();
+            
+        }catch(ValidationException $e){
+            DB::rollback();
+            return back();
+        }
         return view('pdlist.pd_edit',compact('product','companys'));
     }
 
@@ -123,14 +142,13 @@ class ProductController extends Controller
                 \Storage::disk('public')->delete($product->image); 
                 $product->imgDbUpdate($request,$product);
             };
-            $product->productDbUpdate($request,$product);
+            $test = $product->productDbUpdate($request,$product);
             DB::commit();
-            
+
         }catch(ValidationException $e){
             DB::rollback();
             return back();
         }
-        
         return redirect()->route('pdlist.pd_detail', $product)->with('flash_massage',config('message.status.update'));
     }
 

@@ -11,7 +11,7 @@
                         <label class="fs-5">商品名</label>
                             <input id="s_product_name" type="text" placeholder="商品名で検索" name="s_product_name"  value="{{ old('s_product_name')}}" class="m-1 fs-7 pe-5 p-2"><br>
                         <label class="fs-5">メーカー名</label>
-                            <select id="s_company_id" name="s_company_id" value="{{ old('s_company_id')}}" class="m-1 fs-7 pe-5 p-2">
+                            <select id="s_company_name" name="s_company_name" value="{{ old('s_company_name')}}" class="m-1 fs-7 pe-5 p-2">
                                 <option class="text-muted" selected value=''>メーカーで検索</option>  
                                 @foreach ($companys as $company) 
                                     <option>{{$company->company_name}}</option>

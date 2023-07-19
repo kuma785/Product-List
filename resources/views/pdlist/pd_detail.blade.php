@@ -21,8 +21,8 @@
                     <p>{{$product->product_name}}</p>
                 </div>
                 <div>
-                    <label for="company_id" class="mt-1 fs-5">-メーカー名-</label>
-                    <p>{{$product->company_id}}</p>
+                    <label for="company_name" class="mt-1 fs-5">-メーカー名-</label>
+                    <p>{{$company->company_name}}</p>
                 </div>
                 <div>
                     <label for="price" class="mt-1 fs-5">-価格-</label>

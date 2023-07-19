@@ -30,8 +30,8 @@
                         <th>編集</th>
                         <th>削除</th>
                     </tr>
-                    
-                </table>        
+                </table> 
+                <div id='search_result'></div>       
         </main>
 
 @endsection

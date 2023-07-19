@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <main class="mx-auto w-75 text-center">
+    <main class="mx-auto w-75 text-center ">
         <h2 class="m-2">商品リスト更新</h2>
         @if ($errors->any())
             <div>
@@ -16,7 +16,7 @@
             @csrf
             @method('patch')
             <div  class="d-flex justify-content-center ">
-                <div class="w-25 my-5 me-5">
+                <div class="w-25 my-5">
                     @if ($product->image)
                     <img src="{{ asset('storage/'.$product->image)}}" class="img-fluid"> 
                     @else
@@ -38,17 +38,16 @@
                     
                 </div>
 
-                <div>
+                <div class="w-25">
                     <div>
                         <label for="product_name" class="mt-2 fs-5">-商品名-</label><br>
                         <input type="text" name="product_name" value="{{ old('product_name',$product->product_name)}}"><br>
                     </div>
                     <div>
-                        <label for="company_id" class="mt-2 fs-5">-メーカーID-</label><br>
-                        <select id="company_id" name="company_id" class="mt-2 fs-7 pe-5 pt-1">
-                        <option value="">選択してください</option>
+                        <label for="company_name" class="mt-2 fs-5">-メーカーID-</label><br>
+                        <select id="company_name" name="company_name" class="mt-2 fs-7 pe-5 pt-1">
                             @foreach ($companys as $company) 
-                                <option value="{{$company->company_name}}" @if(old('company_id',$product->company_id) == $company->company_name) selected @endif>{{$company->company_name}}</option>
+                                <option @if(old('company_name',$company->company_name) == $company->company_name) selected @endif>{{$company->company_name}}</option>
                             @endforeach
                         </select>
                     </div>
